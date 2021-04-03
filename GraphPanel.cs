@@ -22,7 +22,11 @@ namespace SimpleRoutingAnalyzer
                 gfx.FillEllipse(brush, pt.X - size / 2 + 2, pt.Y - size / 2 + 2, size - 4, size - 4);
             
             string name = ind.ToString();
-            if (Distances != null)
+            if (Metadata != null)
+            {
+                name = $"{ind}: {Metadata[ind]}";
+            }
+            else if (Distances != null)
             {
                 name = "";
                 for (int i = 0; i < Distances.Count; i++)
@@ -103,6 +107,17 @@ namespace SimpleRoutingAnalyzer
             }
         }
         private List<int[]> Distances = null;
+        private string[] MetadataStorage = null;
+        public string[] Metadata
+        {
+            get => MetadataStorage;
+            set
+            {
+                MetadataStorage = value;
+                Refresh();
+            }
+        }
+
 
         private void GetPossibleHops(HashSet<Tuple<int, int>> hops, int p, int s, int d)
         {
@@ -285,17 +300,14 @@ namespace SimpleRoutingAnalyzer
                 if (ModifierKeys.HasFlag(Keys.Control) && SelectedNodes.Contains(sel)) SelectedNodes.Remove(sel);
                 else if (sel >= 0) SelectedNodes.Add(sel);
 
-                if (SelectedNodes.Count > 0)
+                if (e.Button.HasFlag(MouseButtons.Middle))
                 {
-                    if (e.Button.HasFlag(MouseButtons.Middle))
+                    if (SelectedNodes.Count > 0)
                         DragAction = DragActionType.DragNode;
                 }
-                else
-                {
-                    if (e.Button.HasFlag(MouseButtons.Left))
-                        DragAction = DragActionType.Select;
-                    else DragAction = DragActionType.DragScreen;
-                }
+                else if (e.Button.HasFlag(MouseButtons.Left))
+                    DragAction = DragActionType.Select;
+                else DragAction = DragActionType.DragScreen;
 
                 FirstMouse = ScalePt(e.Location);
                 LastMouse = ScalePt(e.Location);
@@ -329,7 +341,8 @@ namespace SimpleRoutingAnalyzer
                         int y = Graph.Points[i].Y + OffsetY;
                         if (DragRegion.Contains(x, y))
                             SelectedNodes.Add(i);
-                        else SelectedNodes.Remove(i);
+                        else if (!ModifierKeys.HasFlag(Keys.Control))
+                            SelectedNodes.Remove(i);
                     }
                     break;
             }

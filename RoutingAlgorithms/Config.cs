@@ -15,6 +15,7 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             if (algorithm is AdvancedGreedyPromotionRouting) return AdvancedGreedyPromotionRouting.Name;
             if (algorithm is RestrictedGreedyPromotionRouting) return RestrictedGreedyPromotionRouting.Name;
             if (algorithm is RestrictedGreedyPromotion2Routing) return RestrictedGreedyPromotion2Routing.Name;
+            if (algorithm is BrutCoordsRouting) return BrutCoordsRouting.Name;
             else return "None";
         }
         public static IRoutingAlgorithm StringToAlgorithm(string algorithm, Graph graph)
@@ -25,6 +26,18 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             if (algorithm == AdvancedGreedyPromotionRouting.Name) return new AdvancedGreedyPromotionRouting(graph);
             if (algorithm == RestrictedGreedyPromotionRouting.Name) return new RestrictedGreedyPromotionRouting(graph);
             if (algorithm == RestrictedGreedyPromotion2Routing.Name) return new RestrictedGreedyPromotion2Routing(graph);
+
+            if (algorithm == BrutCoordsRouting.Name)
+            {
+                var generators = new HashSet<int>();
+                var nodes = graph.Connected(0);
+                foreach (var n in nodes)
+                {
+                    int g = Math.Min(n, graph.Count - n);
+                    generators.Add(g);
+                }
+                return new BrutCoordsRouting(graph.Count, generators.ToArray());
+            }
             else return null;
         }
 

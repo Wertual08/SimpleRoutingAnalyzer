@@ -47,6 +47,7 @@ namespace SimpleRoutingAnalyzer
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.GraphTabPage = new System.Windows.Forms.TabPage();
             this.MainSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.PreviewPanel = new SimpleRoutingAnalyzer.GraphPanel();
             this.MetadataTextBox = new System.Windows.Forms.TextBox();
             this.GlobalMetadataTextBox = new System.Windows.Forms.TextBox();
             this.PropertiesTabPage = new System.Windows.Forms.TabPage();
@@ -100,7 +101,7 @@ namespace SimpleRoutingAnalyzer
             this.OpenConfigDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveConfigDialog = new System.Windows.Forms.SaveFileDialog();
             this.MessageTimer = new System.Windows.Forms.Timer(this.components);
-            this.PreviewPanel = new SimpleRoutingAnalyzer.GraphPanel();
+            this.DrawMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TopMenuStrip.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.GraphTabPage.SuspendLayout();
@@ -179,21 +180,21 @@ namespace SimpleRoutingAnalyzer
             // 
             this.CreateToolStripMenuItem.Name = "CreateToolStripMenuItem";
             this.CreateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.CreateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.CreateToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.CreateToolStripMenuItem.Text = "Create";
             // 
             // DeleteToolStripMenuItem
             // 
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
             this.DeleteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.DeleteToolStripMenuItem.Text = "Delete";
             // 
             // ToggleToolStripMenuItem
             // 
             this.ToggleToolStripMenuItem.Name = "ToggleToolStripMenuItem";
             this.ToggleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.ToggleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ToggleToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.ToggleToolStripMenuItem.Text = "Toggle";
             this.ToggleToolStripMenuItem.Click += new System.EventHandler(this.ToggleToolStripMenuItem_Click);
             // 
@@ -201,7 +202,7 @@ namespace SimpleRoutingAnalyzer
             // 
             this.SourceToolStripMenuItem.Name = "SourceToolStripMenuItem";
             this.SourceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.SourceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SourceToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.SourceToolStripMenuItem.Text = "Begin";
             this.SourceToolStripMenuItem.Click += new System.EventHandler(this.SourceToolStripMenuItem_Click);
             // 
@@ -209,7 +210,7 @@ namespace SimpleRoutingAnalyzer
             // 
             this.DestinationToolStripMenuItem.Name = "DestinationToolStripMenuItem";
             this.DestinationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.DestinationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DestinationToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.DestinationToolStripMenuItem.Text = "End";
             this.DestinationToolStripMenuItem.Click += new System.EventHandler(this.DestinationToolStripMenuItem_Click);
             // 
@@ -217,7 +218,8 @@ namespace SimpleRoutingAnalyzer
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MetadataToolStripMenuItem,
-            this.DistancesToolStripMenuItem});
+            this.DistancesToolStripMenuItem,
+            this.DrawMetadataToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -281,12 +283,28 @@ namespace SimpleRoutingAnalyzer
             this.MainSplitContainer.SplitterDistance = 541;
             this.MainSplitContainer.TabIndex = 3;
             // 
+            // PreviewPanel
+            // 
+            this.PreviewPanel.Algorithm = null;
+            this.PreviewPanel.BackColor = System.Drawing.Color.DimGray;
+            this.PreviewPanel.Destination = -1;
+            this.PreviewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreviewPanel.Graph = null;
+            this.PreviewPanel.Location = new System.Drawing.Point(0, 0);
+            this.PreviewPanel.Name = "PreviewPanel";
+            this.PreviewPanel.ShowDistances = false;
+            this.PreviewPanel.Size = new System.Drawing.Size(537, 390);
+            this.PreviewPanel.Source = -1;
+            this.PreviewPanel.TabIndex = 0;
+            this.PreviewPanel.SelectionChanged += new System.EventHandler(this.PreviewPanel_SelectionChanged);
+            // 
             // MetadataTextBox
             // 
             this.MetadataTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MetadataTextBox.Location = new System.Drawing.Point(0, 20);
             this.MetadataTextBox.Multiline = true;
             this.MetadataTextBox.Name = "MetadataTextBox";
+            this.MetadataTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.MetadataTextBox.Size = new System.Drawing.Size(237, 370);
             this.MetadataTextBox.TabIndex = 0;
             // 
@@ -813,20 +831,12 @@ namespace SimpleRoutingAnalyzer
             this.MessageTimer.Enabled = true;
             this.MessageTimer.Tick += new System.EventHandler(this.MessageTimer_Tick);
             // 
-            // PreviewPanel
+            // DrawMetadataToolStripMenuItem
             // 
-            this.PreviewPanel.Algorithm = null;
-            this.PreviewPanel.BackColor = System.Drawing.Color.DimGray;
-            this.PreviewPanel.Destination = -1;
-            this.PreviewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreviewPanel.Graph = null;
-            this.PreviewPanel.Location = new System.Drawing.Point(0, 0);
-            this.PreviewPanel.Name = "PreviewPanel";
-            this.PreviewPanel.ShowDistances = false;
-            this.PreviewPanel.Size = new System.Drawing.Size(537, 390);
-            this.PreviewPanel.Source = -1;
-            this.PreviewPanel.TabIndex = 0;
-            this.PreviewPanel.SelectionChanged += new System.EventHandler(this.PreviewPanel_SelectionChanged);
+            this.DrawMetadataToolStripMenuItem.Name = "DrawMetadataToolStripMenuItem";
+            this.DrawMetadataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DrawMetadataToolStripMenuItem.Text = "Draw metadata";
+            this.DrawMetadataToolStripMenuItem.Click += new System.EventHandler(this.DrawMetadataToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -934,6 +944,7 @@ namespace SimpleRoutingAnalyzer
         private System.Windows.Forms.TextBox SeedsTextBox;
         private System.Windows.Forms.TextBox GlobalMetadataTextBox;
         private System.Windows.Forms.ToolStripMenuItem DistancesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DrawMetadataToolStripMenuItem;
     }
 }
 

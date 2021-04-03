@@ -89,6 +89,7 @@
     <Compile Include="MessageQueue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutingAlgorithms\BrutCoordsRouting.cs" />
     <Compile Include="RoutingAlgorithms\Config.cs" />
     <Compile Include="RoutingAlgorithms\DijkstraRouting.cs" />
     <Compile Include="RoutingAlgorithms\GreedyPromotionData.cs" />

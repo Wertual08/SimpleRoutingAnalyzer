@@ -90,6 +90,7 @@ namespace SimpleRoutingAnalyzer
             AlgorithmComboBox.Items.Add(AdvancedGreedyPromotionRouting.Name);
             AlgorithmComboBox.Items.Add(RestrictedGreedyPromotionRouting.Name);
             AlgorithmComboBox.Items.Add(RestrictedGreedyPromotion2Routing.Name);
+            AlgorithmComboBox.Items.Add(BrutCoordsRouting.Name);
             AlgorithmComboBox.SelectedIndex = 0;
 
             ModeComboBox.SelectedIndex = 0;
@@ -121,7 +122,7 @@ namespace SimpleRoutingAnalyzer
                     int n;
                     if (args.Length >= 1 && int.TryParse(args[0], out n))
                     {
-                        int[] gens = new int[n - 1];
+                        int[] gens = new int[args.Length - 1];
                         bool no_error = true;
                         for (int i = 1; i < args.Length; i++)
                             if (!int.TryParse(args[i], out gens[i - 1]))
@@ -335,6 +336,23 @@ namespace SimpleRoutingAnalyzer
         private void RandomSeedButton_Click(object sender, EventArgs e)
         {
             SeedNumeric.Value = SeedGenerator.Next();
+        }
+
+        private void DrawMetadataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DrawMetadataToolStripMenuItem.Checked = !DrawMetadataToolStripMenuItem.Checked;
+            if (DrawMetadataToolStripMenuItem.Checked)
+            {
+                var metadata = new string[Graph.Count];
+
+                for (int i = 0; i < Graph.Count; i++)
+                {
+                    metadata[i] = Algorithm?.Metadata(i) ?? "{none}";
+                }
+
+                PreviewPanel.Metadata = metadata;
+            }
+            else PreviewPanel.Metadata = null;
         }
     }
 }
