@@ -6,3 +6,5 @@ Program provide graphical interface for editing generated
 graphs. Also, there is a tool for testing and analysing 
 algorithms in the unstable environment where random nodes 
 are disabled.
+
+Written in .NET Framework Windows Forms, so it can be built for only Windows D:

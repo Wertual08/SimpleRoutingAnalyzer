@@ -15,12 +15,12 @@ namespace SimpleRoutingAnalyzer {
 
         private int OffsetX = 64;
         private int OffsetY = 64;
-        private float Scale = 1.0f;
+        private float GraphScale = 1.0f;
         private Point TranslatePt(Point pt) {
             return new Point(pt.X + OffsetX, pt.Y + OffsetY);
         }
         private Point ScalePt(Point pt) {
-            return new Point((int)(pt.X / Scale), (int)(pt.Y / Scale));
+            return new Point((int)(pt.X / GraphScale), (int)(pt.Y / GraphScale));
         }
 
         private Graph GraphStorage = null;
@@ -96,7 +96,7 @@ namespace SimpleRoutingAnalyzer {
         }
 
         protected override void OnPaint(PaintEventArgs e) {
-            e.Graphics.ScaleTransform(Scale, Scale);
+            e.Graphics.ScaleTransform(GraphScale, GraphScale);
             var hops = new HashSet<(int, int)>();
             GetPossibleHops(hops, Source, Destination);
 
@@ -201,10 +201,10 @@ namespace SimpleRoutingAnalyzer {
 
         protected override void OnMouseWheel(MouseEventArgs e) {
             if (e.Delta > 0) {
-                Scale *= 1.1f;
+                GraphScale *= 1.1f;
             }
             if (e.Delta < 0) {
-                Scale /= 1.1f;
+                GraphScale /= 1.1f;
             }
             Refresh();
             base.OnMouseWheel(e);
@@ -323,15 +323,15 @@ namespace SimpleRoutingAnalyzer {
             DrawToBitmap(controlBitmap, new Rectangle(new Point(), ClientSize));
 
 
-            int lx = Graph.Points.Min(pt => (int)(TranslatePt(pt).X * Scale));
-            int rx = Graph.Points.Max(pt => (int)(TranslatePt(pt).X * Scale));
-            int dy = Graph.Points.Min(pt => (int)(TranslatePt(pt).Y * Scale));
-            int uy = Graph.Points.Max(pt => (int)(TranslatePt(pt).Y * Scale));
+            int lx = Graph.Points.Min(pt => (int)(TranslatePt(pt).X * GraphScale));
+            int rx = Graph.Points.Max(pt => (int)(TranslatePt(pt).X * GraphScale));
+            int dy = Graph.Points.Min(pt => (int)(TranslatePt(pt).Y * GraphScale));
+            int uy = Graph.Points.Max(pt => (int)(TranslatePt(pt).Y * GraphScale));
 
-            lx = Math.Max(0, lx - (int)(32 * Scale));
-            dy = Math.Max(0, dy - (int)(32 * Scale));
-            rx = Math.Min(ClientSize.Width, rx + (int)(32 * Scale));
-            uy = Math.Min(ClientSize.Height, uy + (int)(32 * Scale));
+            lx = Math.Max(0, lx - (int)(32 * GraphScale));
+            dy = Math.Max(0, dy - (int)(32 * GraphScale));
+            rx = Math.Min(ClientSize.Width, rx + (int)(32 * GraphScale));
+            uy = Math.Min(ClientSize.Height, uy + (int)(32 * GraphScale));
             var bounds = new Rectangle(lx, dy, rx - lx, uy - dy);
 
             return controlBitmap.Clone(bounds, PixelFormat.Format32bppArgb);
