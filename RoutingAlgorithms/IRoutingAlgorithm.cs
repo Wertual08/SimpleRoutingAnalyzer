@@ -8,6 +8,7 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
 {
     interface IRoutingAlgorithm
     {
+        void Refresh();
         int[] Route(RoutingData data);
         string Metadata(int node);
         string Metadata();

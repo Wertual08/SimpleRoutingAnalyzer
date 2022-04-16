@@ -41,16 +41,19 @@ namespace SimpleRoutingAnalyzer
             this.ToggleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SourceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DestinationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DistancesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DrawMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.GraphTabPage = new System.Windows.Forms.TabPage();
             this.MainSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.PreviewPanel = new SimpleRoutingAnalyzer.GraphPanel();
             this.MetadataTextBox = new System.Windows.Forms.TextBox();
             this.GlobalMetadataTextBox = new System.Windows.Forms.TextBox();
             this.PropertiesTabPage = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.GraphMetadataTextBox = new System.Windows.Forms.TextBox();
             this.ResetAlgorithmButton = new System.Windows.Forms.Button();
             this.ApplyAlgorithmButton = new System.Windows.Forms.Button();
             this.CoordinatesTextBox = new System.Windows.Forms.TextBox();
@@ -67,8 +70,9 @@ namespace SimpleRoutingAnalyzer
             this.GeneratorComboBox = new System.Windows.Forms.ComboBox();
             this.AdjencyTextBox = new System.Windows.Forms.TextBox();
             this.MetricxTabPage = new System.Windows.Forms.TabPage();
+            this.StopButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
-            this.SeedsTextBox = new System.Windows.Forms.TextBox();
+            this.MetricsArgumentsTextBox = new System.Windows.Forms.TextBox();
             this.NameTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -77,15 +81,6 @@ namespace SimpleRoutingAnalyzer
             this.RandomSeedButton = new System.Windows.Forms.Button();
             this.SeedNumeric = new System.Windows.Forms.NumericUpDown();
             this.ResultsDataGridView = new System.Windows.Forms.DataGridView();
-            this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DisabledColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AlgorithmAVGPathColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptimalAVGPathColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AlgorithmAVGDeltaColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptimalAVGDeltaColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AlgorithmUnreachableColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OptimalUnreachableColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ErrorColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
             this.LogTextBox = new System.Windows.Forms.TextBox();
             this.ModeComboBox = new System.Windows.Forms.ComboBox();
@@ -101,7 +96,8 @@ namespace SimpleRoutingAnalyzer
             this.OpenConfigDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveConfigDialog = new System.Windows.Forms.SaveFileDialog();
             this.MessageTimer = new System.Windows.Forms.Timer(this.components);
-            this.DrawMetadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveExportDialog = new System.Windows.Forms.SaveFileDialog();
+            this.PreviewPanel = new SimpleRoutingAnalyzer.GraphPanel();
             this.TopMenuStrip.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.GraphTabPage.SuspendLayout();
@@ -125,7 +121,7 @@ namespace SimpleRoutingAnalyzer
             this.viewToolStripMenuItem});
             this.TopMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.TopMenuStrip.Name = "TopMenuStrip";
-            this.TopMenuStrip.Size = new System.Drawing.Size(800, 24);
+            this.TopMenuStrip.Size = new System.Drawing.Size(801, 24);
             this.TopMenuStrip.TabIndex = 1;
             this.TopMenuStrip.Text = "menuStrip1";
             // 
@@ -171,7 +167,8 @@ namespace SimpleRoutingAnalyzer
             this.DeleteToolStripMenuItem,
             this.ToggleToolStripMenuItem,
             this.SourceToolStripMenuItem,
-            this.DestinationToolStripMenuItem});
+            this.DestinationToolStripMenuItem,
+            this.ExportToolStripMenuItem});
             this.graphToolStripMenuItem.Name = "graphToolStripMenuItem";
             this.graphToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.graphToolStripMenuItem.Text = "Graph";
@@ -214,6 +211,14 @@ namespace SimpleRoutingAnalyzer
             this.DestinationToolStripMenuItem.Text = "End";
             this.DestinationToolStripMenuItem.Click += new System.EventHandler(this.DestinationToolStripMenuItem_Click);
             // 
+            // ExportToolStripMenuItem
+            // 
+            this.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem";
+            this.ExportToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.ExportToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.ExportToolStripMenuItem.Text = "Export";
+            this.ExportToolStripMenuItem.Click += new System.EventHandler(this.ExportToolStripMenuItem_Click);
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -228,7 +233,7 @@ namespace SimpleRoutingAnalyzer
             // 
             this.MetadataToolStripMenuItem.Name = "MetadataToolStripMenuItem";
             this.MetadataToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.MetadataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.MetadataToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.MetadataToolStripMenuItem.Text = "Metadata";
             this.MetadataToolStripMenuItem.Click += new System.EventHandler(this.MetadataToolStripMenuItem_Click);
             // 
@@ -236,9 +241,16 @@ namespace SimpleRoutingAnalyzer
             // 
             this.DistancesToolStripMenuItem.Name = "DistancesToolStripMenuItem";
             this.DistancesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.DistancesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DistancesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.DistancesToolStripMenuItem.Text = "Distances";
             this.DistancesToolStripMenuItem.Click += new System.EventHandler(this.DistancesToolStripMenuItem_Click);
+            // 
+            // DrawMetadataToolStripMenuItem
+            // 
+            this.DrawMetadataToolStripMenuItem.Name = "DrawMetadataToolStripMenuItem";
+            this.DrawMetadataToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.DrawMetadataToolStripMenuItem.Text = "Draw metadata";
+            this.DrawMetadataToolStripMenuItem.Click += new System.EventHandler(this.DrawMetadataToolStripMenuItem_Click);
             // 
             // MainTabControl
             // 
@@ -249,7 +261,7 @@ namespace SimpleRoutingAnalyzer
             this.MainTabControl.Location = new System.Drawing.Point(0, 24);
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
-            this.MainTabControl.Size = new System.Drawing.Size(800, 426);
+            this.MainTabControl.Size = new System.Drawing.Size(801, 426);
             this.MainTabControl.TabIndex = 2;
             // 
             // GraphTabPage
@@ -258,7 +270,7 @@ namespace SimpleRoutingAnalyzer
             this.GraphTabPage.Location = new System.Drawing.Point(4, 22);
             this.GraphTabPage.Name = "GraphTabPage";
             this.GraphTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GraphTabPage.Size = new System.Drawing.Size(792, 400);
+            this.GraphTabPage.Size = new System.Drawing.Size(793, 400);
             this.GraphTabPage.TabIndex = 0;
             this.GraphTabPage.Text = "Graph";
             this.GraphTabPage.UseVisualStyleBackColor = true;
@@ -279,24 +291,9 @@ namespace SimpleRoutingAnalyzer
             // 
             this.MainSplitContainer.Panel2.Controls.Add(this.MetadataTextBox);
             this.MainSplitContainer.Panel2.Controls.Add(this.GlobalMetadataTextBox);
-            this.MainSplitContainer.Size = new System.Drawing.Size(786, 394);
-            this.MainSplitContainer.SplitterDistance = 541;
+            this.MainSplitContainer.Size = new System.Drawing.Size(787, 394);
+            this.MainSplitContainer.SplitterDistance = 542;
             this.MainSplitContainer.TabIndex = 3;
-            // 
-            // PreviewPanel
-            // 
-            this.PreviewPanel.Algorithm = null;
-            this.PreviewPanel.BackColor = System.Drawing.Color.DimGray;
-            this.PreviewPanel.Destination = -1;
-            this.PreviewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PreviewPanel.Graph = null;
-            this.PreviewPanel.Location = new System.Drawing.Point(0, 0);
-            this.PreviewPanel.Name = "PreviewPanel";
-            this.PreviewPanel.ShowDistances = false;
-            this.PreviewPanel.Size = new System.Drawing.Size(537, 390);
-            this.PreviewPanel.Source = -1;
-            this.PreviewPanel.TabIndex = 0;
-            this.PreviewPanel.SelectionChanged += new System.EventHandler(this.PreviewPanel_SelectionChanged);
             // 
             // MetadataTextBox
             // 
@@ -318,6 +315,8 @@ namespace SimpleRoutingAnalyzer
             // 
             // PropertiesTabPage
             // 
+            this.PropertiesTabPage.Controls.Add(this.label13);
+            this.PropertiesTabPage.Controls.Add(this.GraphMetadataTextBox);
             this.PropertiesTabPage.Controls.Add(this.ResetAlgorithmButton);
             this.PropertiesTabPage.Controls.Add(this.ApplyAlgorithmButton);
             this.PropertiesTabPage.Controls.Add(this.CoordinatesTextBox);
@@ -336,10 +335,32 @@ namespace SimpleRoutingAnalyzer
             this.PropertiesTabPage.Location = new System.Drawing.Point(4, 22);
             this.PropertiesTabPage.Name = "PropertiesTabPage";
             this.PropertiesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.PropertiesTabPage.Size = new System.Drawing.Size(792, 400);
+            this.PropertiesTabPage.Size = new System.Drawing.Size(793, 400);
             this.PropertiesTabPage.TabIndex = 1;
             this.PropertiesTabPage.Text = "Properties";
             this.PropertiesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(505, 83);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(52, 13);
+            this.label13.TabIndex = 16;
+            this.label13.Text = "Metadata";
+            // 
+            // GraphMetadataTextBox
+            // 
+            this.GraphMetadataTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GraphMetadataTextBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GraphMetadataTextBox.Location = new System.Drawing.Point(505, 99);
+            this.GraphMetadataTextBox.Multiline = true;
+            this.GraphMetadataTextBox.Name = "GraphMetadataTextBox";
+            this.GraphMetadataTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.GraphMetadataTextBox.Size = new System.Drawing.Size(138, 266);
+            this.GraphMetadataTextBox.TabIndex = 15;
             // 
             // ResetAlgorithmButton
             // 
@@ -366,7 +387,7 @@ namespace SimpleRoutingAnalyzer
             this.CoordinatesTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CoordinatesTextBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CoordinatesTextBox.Location = new System.Drawing.Point(648, 99);
+            this.CoordinatesTextBox.Location = new System.Drawing.Point(649, 99);
             this.CoordinatesTextBox.Multiline = true;
             this.CoordinatesTextBox.Name = "CoordinatesTextBox";
             this.CoordinatesTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -377,7 +398,7 @@ namespace SimpleRoutingAnalyzer
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(647, 83);
+            this.label5.Location = new System.Drawing.Point(648, 83);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 13);
             this.label5.TabIndex = 11;
@@ -386,7 +407,7 @@ namespace SimpleRoutingAnalyzer
             // GeneratorButton
             // 
             this.GeneratorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.GeneratorButton.Location = new System.Drawing.Point(709, 57);
+            this.GeneratorButton.Location = new System.Drawing.Point(710, 57);
             this.GeneratorButton.Name = "GeneratorButton";
             this.GeneratorButton.Size = new System.Drawing.Size(75, 23);
             this.GeneratorButton.TabIndex = 10;
@@ -467,7 +488,7 @@ namespace SimpleRoutingAnalyzer
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ArgumentsTextBox.Location = new System.Drawing.Point(234, 59);
             this.ArgumentsTextBox.Name = "ArgumentsTextBox";
-            this.ArgumentsTextBox.Size = new System.Drawing.Size(471, 20);
+            this.ArgumentsTextBox.Size = new System.Drawing.Size(472, 20);
             this.ArgumentsTextBox.TabIndex = 2;
             // 
             // GeneratorComboBox
@@ -489,13 +510,14 @@ namespace SimpleRoutingAnalyzer
             this.AdjencyTextBox.Multiline = true;
             this.AdjencyTextBox.Name = "AdjencyTextBox";
             this.AdjencyTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.AdjencyTextBox.Size = new System.Drawing.Size(636, 266);
+            this.AdjencyTextBox.Size = new System.Drawing.Size(493, 266);
             this.AdjencyTextBox.TabIndex = 0;
             // 
             // MetricxTabPage
             // 
+            this.MetricxTabPage.Controls.Add(this.StopButton);
             this.MetricxTabPage.Controls.Add(this.label12);
-            this.MetricxTabPage.Controls.Add(this.SeedsTextBox);
+            this.MetricxTabPage.Controls.Add(this.MetricsArgumentsTextBox);
             this.MetricxTabPage.Controls.Add(this.NameTextBox);
             this.MetricxTabPage.Controls.Add(this.label11);
             this.MetricxTabPage.Controls.Add(this.label10);
@@ -514,29 +536,40 @@ namespace SimpleRoutingAnalyzer
             this.MetricxTabPage.Controls.Add(this.label6);
             this.MetricxTabPage.Location = new System.Drawing.Point(4, 22);
             this.MetricxTabPage.Name = "MetricxTabPage";
-            this.MetricxTabPage.Size = new System.Drawing.Size(792, 400);
+            this.MetricxTabPage.Size = new System.Drawing.Size(793, 400);
             this.MetricxTabPage.TabIndex = 2;
             this.MetricxTabPage.Text = "Metrics";
             this.MetricxTabPage.UseVisualStyleBackColor = true;
+            // 
+            // StopButton
+            // 
+            this.StopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.StopButton.Location = new System.Drawing.Point(84, 374);
+            this.StopButton.Name = "StopButton";
+            this.StopButton.Size = new System.Drawing.Size(75, 23);
+            this.StopButton.TabIndex = 21;
+            this.StopButton.Text = "Stop";
+            this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(0, 42);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(37, 13);
+            this.label12.Size = new System.Drawing.Size(57, 13);
             this.label12.TabIndex = 20;
-            this.label12.Text = "Seeds";
+            this.label12.Text = "Arguments";
             // 
-            // SeedsTextBox
+            // MetricsArgumentsTextBox
             // 
-            this.SeedsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.MetricsArgumentsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.SeedsTextBox.Location = new System.Drawing.Point(3, 58);
-            this.SeedsTextBox.Multiline = true;
-            this.SeedsTextBox.Name = "SeedsTextBox";
-            this.SeedsTextBox.Size = new System.Drawing.Size(282, 206);
-            this.SeedsTextBox.TabIndex = 19;
+            this.MetricsArgumentsTextBox.Location = new System.Drawing.Point(3, 58);
+            this.MetricsArgumentsTextBox.Multiline = true;
+            this.MetricsArgumentsTextBox.Name = "MetricsArgumentsTextBox";
+            this.MetricsArgumentsTextBox.Size = new System.Drawing.Size(282, 206);
+            this.MetricsArgumentsTextBox.TabIndex = 19;
             // 
             // NameTextBox
             // 
@@ -548,6 +581,7 @@ namespace SimpleRoutingAnalyzer
             // 
             // label11
             // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(0, 267);
             this.label11.Name = "label11";
@@ -630,79 +664,12 @@ namespace SimpleRoutingAnalyzer
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ResultsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ResultsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NumberColumn,
-            this.DisabledColumn,
-            this.AlgorithmAVGPathColumn,
-            this.OptimalAVGPathColumn,
-            this.AlgorithmAVGDeltaColumn,
-            this.OptimalAVGDeltaColumn,
-            this.AlgorithmUnreachableColumn,
-            this.OptimalUnreachableColumn,
-            this.ErrorColumn});
             this.ResultsDataGridView.Location = new System.Drawing.Point(503, 19);
             this.ResultsDataGridView.Name = "ResultsDataGridView";
             this.ResultsDataGridView.ReadOnly = true;
             this.ResultsDataGridView.RowHeadersVisible = false;
-            this.ResultsDataGridView.Size = new System.Drawing.Size(286, 349);
+            this.ResultsDataGridView.Size = new System.Drawing.Size(287, 349);
             this.ResultsDataGridView.TabIndex = 11;
-            // 
-            // NumberColumn
-            // 
-            this.NumberColumn.HeaderText = "Number";
-            this.NumberColumn.Name = "NumberColumn";
-            this.NumberColumn.ReadOnly = true;
-            this.NumberColumn.Width = 50;
-            // 
-            // DisabledColumn
-            // 
-            this.DisabledColumn.HeaderText = "Disabled";
-            this.DisabledColumn.Name = "DisabledColumn";
-            this.DisabledColumn.ReadOnly = true;
-            this.DisabledColumn.Width = 50;
-            // 
-            // AlgorithmAVGPathColumn
-            // 
-            this.AlgorithmAVGPathColumn.HeaderText = "Algorithm AVG Path";
-            this.AlgorithmAVGPathColumn.Name = "AlgorithmAVGPathColumn";
-            this.AlgorithmAVGPathColumn.ReadOnly = true;
-            // 
-            // OptimalAVGPathColumn
-            // 
-            this.OptimalAVGPathColumn.HeaderText = "Optimal AVG Path";
-            this.OptimalAVGPathColumn.Name = "OptimalAVGPathColumn";
-            this.OptimalAVGPathColumn.ReadOnly = true;
-            // 
-            // AlgorithmAVGDeltaColumn
-            // 
-            this.AlgorithmAVGDeltaColumn.HeaderText = "Algorithm AVG Delta";
-            this.AlgorithmAVGDeltaColumn.Name = "AlgorithmAVGDeltaColumn";
-            this.AlgorithmAVGDeltaColumn.ReadOnly = true;
-            // 
-            // OptimalAVGDeltaColumn
-            // 
-            this.OptimalAVGDeltaColumn.HeaderText = "Optimal AVG Delta";
-            this.OptimalAVGDeltaColumn.Name = "OptimalAVGDeltaColumn";
-            this.OptimalAVGDeltaColumn.ReadOnly = true;
-            // 
-            // AlgorithmUnreachableColumn
-            // 
-            this.AlgorithmUnreachableColumn.HeaderText = "Algorithm Unreachable";
-            this.AlgorithmUnreachableColumn.Name = "AlgorithmUnreachableColumn";
-            this.AlgorithmUnreachableColumn.ReadOnly = true;
-            // 
-            // OptimalUnreachableColumn
-            // 
-            this.OptimalUnreachableColumn.HeaderText = "Optimal Unreachable";
-            this.OptimalUnreachableColumn.Name = "OptimalUnreachableColumn";
-            this.OptimalUnreachableColumn.ReadOnly = true;
-            // 
-            // ErrorColumn
-            // 
-            this.ErrorColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ErrorColumn.HeaderText = "Error";
-            this.ErrorColumn.Name = "ErrorColumn";
-            this.ErrorColumn.ReadOnly = true;
             // 
             // label9
             // 
@@ -731,24 +698,22 @@ namespace SimpleRoutingAnalyzer
             this.ModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ModeComboBox.FormattingEnabled = true;
             this.ModeComboBox.Items.AddRange(new object[] {
-            "Simple",
-            "Stress test",
-            "Stress test MonteKarlo"});
+            "Stress",
+            "Half-fault"});
             this.ModeComboBox.Location = new System.Drawing.Point(3, 347);
             this.ModeComboBox.Name = "ModeComboBox";
             this.ModeComboBox.Size = new System.Drawing.Size(282, 21);
             this.ModeComboBox.TabIndex = 8;
-            this.ModeComboBox.SelectedIndexChanged += new System.EventHandler(this.ModeComboBox_SelectedIndexChanged);
             // 
             // MetricsProgressBar
             // 
             this.MetricsProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MetricsProgressBar.ForeColor = System.Drawing.Color.Chartreuse;
-            this.MetricsProgressBar.Location = new System.Drawing.Point(84, 374);
+            this.MetricsProgressBar.Location = new System.Drawing.Point(165, 374);
             this.MetricsProgressBar.MarqueeAnimationSpeed = 1000;
             this.MetricsProgressBar.Name = "MetricsProgressBar";
-            this.MetricsProgressBar.Size = new System.Drawing.Size(705, 23);
+            this.MetricsProgressBar.Size = new System.Drawing.Size(625, 23);
             this.MetricsProgressBar.TabIndex = 7;
             // 
             // RunButton
@@ -813,6 +778,8 @@ namespace SimpleRoutingAnalyzer
             // MetricsBackgroundWorker
             // 
             this.MetricsBackgroundWorker.WorkerReportsProgress = true;
+            this.MetricsBackgroundWorker.WorkerSupportsCancellation = true;
+            this.MetricsBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.MetricsBackgroundWorker_DoWork);
             this.MetricsBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.MetricsBackgroundWorker_ProgressChanged);
             this.MetricsBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.MetricsBackgroundWorker_RunWorkerCompleted);
             // 
@@ -831,18 +798,33 @@ namespace SimpleRoutingAnalyzer
             this.MessageTimer.Enabled = true;
             this.MessageTimer.Tick += new System.EventHandler(this.MessageTimer_Tick);
             // 
-            // DrawMetadataToolStripMenuItem
+            // SaveExportDialog
             // 
-            this.DrawMetadataToolStripMenuItem.Name = "DrawMetadataToolStripMenuItem";
-            this.DrawMetadataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.DrawMetadataToolStripMenuItem.Text = "Draw metadata";
-            this.DrawMetadataToolStripMenuItem.Click += new System.EventHandler(this.DrawMetadataToolStripMenuItem_Click);
+            this.SaveExportDialog.DefaultExt = "png";
+            this.SaveExportDialog.Filter = "png|*.png";
+            // 
+            // PreviewPanel
+            // 
+            this.PreviewPanel.Algorithm = null;
+            this.PreviewPanel.BackColor = System.Drawing.Color.White;
+            this.PreviewPanel.Destination = -1;
+            this.PreviewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PreviewPanel.Graph = null;
+            this.PreviewPanel.Location = new System.Drawing.Point(0, 0);
+            this.PreviewPanel.Metadata = null;
+            this.PreviewPanel.Name = "PreviewPanel";
+            this.PreviewPanel.ShowDistances = false;
+            this.PreviewPanel.ShowLabels = false;
+            this.PreviewPanel.Size = new System.Drawing.Size(538, 390);
+            this.PreviewPanel.Source = -1;
+            this.PreviewPanel.TabIndex = 0;
+            this.PreviewPanel.SelectionChanged += new System.EventHandler(this.PreviewPanel_SelectionChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(801, 450);
             this.Controls.Add(this.MainTabControl);
             this.Controls.Add(this.TopMenuStrip);
             this.MainMenuStrip = this.TopMenuStrip;
@@ -925,15 +907,6 @@ namespace SimpleRoutingAnalyzer
         private System.Windows.Forms.DataGridView ResultsDataGridView;
         private System.Windows.Forms.NumericUpDown SeedNumeric;
         private System.Windows.Forms.Button RandomSeedButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NumberColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DisabledColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AlgorithmAVGPathColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptimalAVGPathColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AlgorithmAVGDeltaColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptimalAVGDeltaColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AlgorithmUnreachableColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OptimalUnreachableColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ErrorColumn;
         private System.Windows.Forms.ToolStripMenuItem SaveAsToolStripMenuItem;
         private System.Windows.Forms.TextBox NameTextBox;
         private System.Windows.Forms.Label label11;
@@ -941,10 +914,15 @@ namespace SimpleRoutingAnalyzer
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown IterationsNumeric;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox SeedsTextBox;
+        private System.Windows.Forms.TextBox MetricsArgumentsTextBox;
         private System.Windows.Forms.TextBox GlobalMetadataTextBox;
         private System.Windows.Forms.ToolStripMenuItem DistancesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DrawMetadataToolStripMenuItem;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox GraphMetadataTextBox;
+        private System.Windows.Forms.Button StopButton;
+        private System.Windows.Forms.ToolStripMenuItem ExportToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog SaveExportDialog;
     }
 }
 

@@ -28,6 +28,9 @@ namespace SimpleRoutingAnalyzer
                 }
             }
 
+            graph["width"] = w.ToString();
+            graph["height"] = h.ToString();
+
             return graph;
         }
 
@@ -53,6 +56,10 @@ namespace SimpleRoutingAnalyzer
                 int y = (int)(r * Math.Sin(a));
                 graph.Points[s] = new Point(x, y);
             }
+
+            graph["count"] = gens.Length.ToString();
+            for (int i = 0; i < gens.Length; i++)
+                graph[$"g{i}"] = gens[i].ToString();
 
             return graph;
         }

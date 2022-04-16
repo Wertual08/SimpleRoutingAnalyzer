@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleRoutingAnalyzer.RoutingAlgorithms
-{
-    class BrutCoordsRouting : IRoutingAlgorithm
-    {
+namespace SimpleRoutingAnalyzer.RoutingAlgorithms {
+    class BrutCoordsRouting : IRoutingAlgorithm {
         public static readonly string Name = "Brut-Coords";
 
         private int[,] Coordinates;
 
-        private static int[] Solve(int src, int dst, int count, int[] generators)
-        {
+        private static int[] Solve(int src, int dst, int count, int[] generators) {
             int sd = dst - src;
 
             int n_bounds = (int)Math.Sqrt(count);
@@ -28,20 +25,18 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             int[] result = null;
 
 
-            do
-            {
+            do {
                 int eq = 0;
                 eq += n * count;
-                for (int i = 0; i < vector.Length; i++)
+                for (int i = 0; i < vector.Length; i++) {
                     eq += vector[i] * generators[i];
+                }
                 //eq = Math.Abs(eq);
 
                 int sum = vector.Sum((int v) => Math.Abs(v));
 
-                if (eq == sd)
-                {
-                    if (sum < min_sum)
-                    {
+                if (eq == sd) {
+                    if (sum < min_sum) {
                         result = new int[vector.Length + 1];
                         result[0] = n;
                         vector.CopyTo(result, 1);
@@ -50,16 +45,13 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
                 }
 
                 vector[0]++;
-                for (int i = 0; i < vector.Length - 1; i++)
-                {
-                    if (vector[i] > g_bounds)
-                    {
+                for (int i = 0; i < vector.Length - 1; i++) {
+                    if (vector[i] > g_bounds) {
                         vector[i + 1]++;
                         vector[i] = -g_bounds;
                     }
                 }
-                if (vector[vector.Length - 1] > g_bounds)
-                {
+                if (vector[vector.Length - 1] > g_bounds) {
                     vector[vector.Length - 1] = -g_bounds;
                     n++;
                 }
@@ -69,34 +61,30 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             return result;
         }
 
-        public BrutCoordsRouting(int count, int[] generators)
-        {
+        public BrutCoordsRouting(int count, int[] generators) {
             Coordinates = new int[count, generators.Length + 1];
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 var coords = Solve(0, i, count, generators);
                 if (coords == null)
                     throw new Exception("Unable to find coordinates.");
 
-                for (int j = 0; j < coords.Length; j++)
-                {
+                for (int j = 0; j < coords.Length; j++) {
                     Coordinates[i, j] = coords[j];
                 }
             }
         }
 
-        public int[] Route(RoutingData data)
-        {
+        public void Refresh() { }
+
+        public int[] Route(RoutingData data) {
             return null;
         }
 
-        public string Metadata(int node)
-        {
+        public string Metadata(int node) {
             var builder = new StringBuilder();
             builder.Append("{ ");
 
-            for (int i = 0; i < Coordinates.GetLength(1); i++)
-            {
+            for (int i = 0; i < Coordinates.GetLength(1); i++) {
                 builder.Append(/*Coordinates[(node + 12) % 64, i] - */Coordinates[node, i]);
                 if (i < Coordinates.GetLength(1) - 1) builder.Append(", ");
             }
@@ -105,8 +93,7 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             return builder.ToString();
         }
 
-        public string Metadata()
-        {
+        public string Metadata() {
             return "";
         }
     }

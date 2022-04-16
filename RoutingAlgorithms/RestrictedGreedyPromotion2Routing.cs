@@ -80,6 +80,8 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             return res.ToArray();
         }
 
+        public void Refresh() { }
+
         public string Metadata(int node)
         {
             if (node >= 0 && node < Data.Count)

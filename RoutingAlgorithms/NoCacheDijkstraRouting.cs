@@ -5,38 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleRoutingAnalyzer.RoutingAlgorithms {
-    class DijkstraRouting : IRoutingAlgorithm {
-        public static readonly string Name = "Dijkstra";
+    class NoCahceDijkstraRouting : IRoutingAlgorithm {
+        public static readonly string Name = "No Cache Dijkstra";
 
         private Graph graph;
-        private int[,] weights;
+        private int[] weights;
+        private bool refresh = true;
 
 
-        public void MarkWeights(int s, int d, int w = 0) {
-            if (w < weights[s, d]) {
-                weights[s, d] = w;
+        private void ResetWeights() {
+            for (int i = 0; i < weights.Length; i++) {
+                weights[i] = int.MaxValue;
+            }
+        }
+        private void MarkWeights(int s, int w = 0) {
+            if (w < weights[s]) {
+                weights[s] = w;
 
                 foreach (int node in graph[s]) {
-                    MarkWeights(node, d, w + 1);
+                    MarkWeights(node, w + 1);
                 }
             } 
         }
-        public DijkstraRouting(Graph graph) {
+
+        public NoCahceDijkstraRouting(Graph graph) {
             this.graph = graph;
-            weights = new int[graph.Count, graph.Count];
+            weights = new int[graph.Count];
             Refresh();
         }
 
         public void Refresh() {
-            for (int s = 0; s < graph.Count; s++) {
-                for (int d = 0; d < graph.Count; d++) {
-                    weights[s, d] = int.MaxValue;
-                }
-            }
-
-            for (int i = 0; i < graph.Count; i++) {
-                MarkWeights(i, i);
-            }
+            refresh = true;
         }
 
         public string Metadata(int node) {
@@ -53,12 +52,17 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms {
 
             if (s == d) return new int[0];
 
-            var nodes = graph[s];
+            if (refresh) {
+                refresh = false;
+                ResetWeights();
+                MarkWeights(d);
+            }
+
             var res = new List<int>();
 
             int min = int.MaxValue;
-            foreach (var node in nodes) {
-                int w = weights[node, d];
+            foreach (var node in graph[s]) {
+                int w = weights[node];
                 if (w != int.MaxValue) {
                     if (w < min) {
                         res.Clear();

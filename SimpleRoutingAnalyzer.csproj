@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>SimpleRoutingAnalyzer</RootNamespace>
     <AssemblyName>SimpleRoutingAnalyzer</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,8 +88,17 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MessageQueue.cs" />
+    <Compile Include="Metrics\IMetrics.cs" />
+    <Compile Include="Metrics\Metrics.cs" />
+    <Compile Include="Metrics\HalfFaultMetrics.cs" />
+    <Compile Include="NodesRenderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutingAlgorithms\CirculantGreedyPromotionRouting.cs" />
+    <Compile Include="RoutingAlgorithms\NoCacheDijkstraRouting.cs" />
+    <Compile Include="RoutingAlgorithms\DynamicMeshRouting.cs" />
+    <Compile Include="RoutingAlgorithms\OFTRouting.cs" />
+    <Compile Include="RoutingAlgorithms\HotPotatoRouting.cs" />
     <Compile Include="RoutingAlgorithms\BrutCoordsRouting.cs" />
     <Compile Include="RoutingAlgorithms\Config.cs" />
     <Compile Include="RoutingAlgorithms\DijkstraRouting.cs" />
@@ -96,7 +106,7 @@
     <Compile Include="RoutingAlgorithms\AdvancedGreedyPromotionRouting.cs" />
     <Compile Include="RoutingAlgorithms\GreedyPromotionRouting.cs" />
     <Compile Include="RoutingAlgorithms\IRoutingAlgorithm.cs" />
-    <Compile Include="RoutingAlgorithms\Metrics.cs" />
+    <Compile Include="Metrics\StressMetrics.cs" />
     <Compile Include="RoutingAlgorithms\RestrictedGreedyPromotion2Routing.cs" />
     <Compile Include="RoutingAlgorithms\RestrictedGreedyPromotionRouting.cs" />
     <Compile Include="RoutingAlgorithms\RoutingData.cs" />
@@ -111,6 +121,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

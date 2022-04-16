@@ -19,6 +19,8 @@ namespace SimpleRoutingAnalyzer.RoutingAlgorithms
             Graph = graph;
         }
 
+        public void Refresh() { }
+
         public int[] Route(RoutingData data)
         {
             int p = data.Previous;

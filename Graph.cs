@@ -28,6 +28,17 @@ namespace SimpleRoutingAnalyzer
                 Enabled[i] = true;
         }
 
+        public Dictionary<string, string> Metadata { get; set; } = new Dictionary<string, string>();
+        public string this[string key]
+        {
+            get => Metadata[key];
+            set
+            {
+                if (Metadata.ContainsKey(key)) Metadata[key] = value;
+                else Metadata.Add(key, value);
+            }
+        }
+
         public int this[int s, int d] 
         { 
             get => AdjencyMatrix[s * Count + d]; 
@@ -37,10 +48,15 @@ namespace SimpleRoutingAnalyzer
         {
             get
             {
+                if (!Enabled[s]) {
+                    return new int[0];
+                }
                 var result = new List<int>(Count);
-                for (int d = 0; d < Count; d++)
-                    if (AdjencyMatrix[s * Count + d] != None && Enabled[d])
+                for (int d = 0; d < Count; d++) {
+                    if (AdjencyMatrix[s * Count + d] != None && Enabled[d]) {
                         result.Add(d);
+                    }
+                }
                 return result.ToArray();
             }
         }
@@ -132,6 +148,33 @@ namespace SimpleRoutingAnalyzer
                 str += Points[y].X + " " + Points[y].Y + Environment.NewLine;
 
             return str;
+        }
+
+        public void ParseMetadata(string metadata)
+        {
+            Metadata.Clear();
+            var lines = metadata.Split(
+                new string[] { Environment.NewLine }, 
+                StringSplitOptions.RemoveEmptyEntries
+            );
+            foreach (var line in lines)
+            {
+                var parts = line.Split(new char[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length != 2) return;
+                Metadata.Add(parts[0], parts[1]);
+            }
+        }
+        public string MetadataToString()
+        {
+            var builder = new StringBuilder();
+            foreach (var item in Metadata)
+            {
+                builder.Append(item.Key);
+                builder.Append(" ");
+                builder.Append(item.Value);
+                builder.AppendLine();
+            }
+            return builder.ToString();
         }
     }
 }
